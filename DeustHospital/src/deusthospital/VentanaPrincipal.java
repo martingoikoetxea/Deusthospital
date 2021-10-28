@@ -57,7 +57,8 @@ public class VentanaPrincipal extends JFrame {
 		btninformacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventanaActual.dispose();
-				//new VentanaInformacion(ventanaActual);
+				VentanaInformacion ven = new VentanaInformacion();
+				new VentanaInformacion();
 				
 			}
 		});
