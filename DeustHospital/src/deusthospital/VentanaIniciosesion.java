@@ -23,6 +23,8 @@ public class VentanaIniciosesion extends JFrame {
 	private JLabel labeliniciosesion;
 	private JPanel panelcentro,panelnorte,paneltextfields;
 	private JButton btnvolverinicio;
+	private JButton btniniciosesion;
+	private JButton btnregistro;
 
 	/**
 	 * Launch the application.
@@ -80,6 +82,19 @@ public class VentanaIniciosesion extends JFrame {
 		paneltextfields.add(textFieldcontraseña, BorderLayout.NORTH);
 		textFieldcontraseña.setColumns(10);
 		
+		btniniciosesion = new JButton("Inicio sesion");
+		paneltextfields.add(btniniciosesion, BorderLayout.WEST);
+		
+		btnregistro = new JButton("Registro");
+		
+		paneltextfields.add(btnregistro, BorderLayout.EAST);
+		
+		btnregistro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new VentanaRegistro(ventanaActual);
+				ventanaActual.setVisible(false);
+			}
+		});
 		btnvolverinicio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventanaActual.dispose();

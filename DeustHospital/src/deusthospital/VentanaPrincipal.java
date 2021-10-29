@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.TreeMap;
 import java.awt.event.ActionEvent;
 
 public class VentanaPrincipal extends JFrame {
@@ -20,6 +21,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel labeltexto;
 	private JLabel labelimagen;
 	private JFrame ventanaActual;
+	public static TreeMap<String, Paciente> tmpacientes;
 	/**
 	 * Launch the application.
 	 */
@@ -48,6 +50,7 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		tmpacientes = new TreeMap<>();
 		
 		JPanel panelnorte = new JPanel();
 		contentPane.add(panelnorte, BorderLayout.NORTH);
