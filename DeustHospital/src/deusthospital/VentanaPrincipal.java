@@ -41,6 +41,7 @@ public class VentanaPrincipal extends JFrame {
 	 */
 	public VentanaPrincipal() {
 		ventanaActual = this;
+		setTitle ("Ventana Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -54,14 +55,8 @@ public class VentanaPrincipal extends JFrame {
 		labeltexto = new JLabel(" DEUSTOHEALTH");
 		panelnorte.add(labeltexto);
 		btninformacion = new JButton("informacion");
-		btninformacion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ventanaActual.dispose();
-				VentanaInformacion ven = new VentanaInformacion();
-				new VentanaInformacion();
-				
-			}
-		});
+		
+		
 		panelnorte.add(btninformacion);
 		
 		btncontacto = new JButton("contacto");
@@ -75,6 +70,39 @@ public class VentanaPrincipal extends JFrame {
 		
 		labelimagen = new JLabel("imagen");
 		panel.add(labelimagen);
-	}
+	
+		btninformacion.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			
+			new VentanaInformacion(ventanaActual);
+			ventanaActual.setVisible(false);
+			
+			
+		}
+		});
+		
+		btncontacto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				new VentanaContacto(ventanaActual);
+				ventanaActual.setVisible(false);
+				
+				
+			}
+			});
+		btniniciosesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				new VentanaIniciosesion(ventanaActual);
+				ventanaActual.setVisible(false);
+				
+				
+			}
+			});
+		setVisible(true);
 
+}
 }
