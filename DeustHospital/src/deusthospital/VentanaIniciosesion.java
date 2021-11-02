@@ -11,20 +11,24 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.util.TreeMap;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 
 public class VentanaIniciosesion extends JFrame {
 
 	private JPanel contentPane;
 	private JFrame ventanaActual,ventanaAnterior;
-	private JTextField textFieldusuario;
-	private JTextField textFieldcontraseña;
-	private JTextArea  txtUsuarioContrasea;
 	private JLabel labeliniciosesion;
-	private JPanel panelcentro,panelnorte,paneltextfields;
+	private JPanel panelcentro,panelnorte,panelCentral;
 	private JButton btnvolverinicio;
-	private JButton btniniciosesion;
-	private JButton btnregistro;
+	private JLabel lblNewLabel;
+	private JTextField textuUsuario;
+	private JLabel lblNewLabel_1;
+	private JTextField textContraseña;
+	private JPanel panelSur;
+	private JButton btnIniciosesion,btnRegistro;
+	
 
 	/**
 	 * Launch the application.
@@ -65,42 +69,48 @@ public class VentanaIniciosesion extends JFrame {
 		labeliniciosesion = new JLabel("INICIAR SESION");
 		panelnorte.add(labeliniciosesion, BorderLayout.CENTER);
 		
-		txtUsuarioContrasea = new JTextArea();
-		txtUsuarioContrasea.setText("\r\n\r\n\r\nUSUARIO\r\n\r\n\r\n\r\n\r\nCONTRASE\u00D1A");
-		contentPane.add(txtUsuarioContrasea, BorderLayout.WEST);
+		panelCentral = new JPanel();
+		contentPane.add(panelCentral, BorderLayout.CENTER);
+		panelCentral.setLayout(new GridLayout(2, 2, 0, 0));
 		
-		paneltextfields = new JPanel();
-		contentPane.add(paneltextfields, BorderLayout.CENTER);
-		paneltextfields.setLayout(new BorderLayout(0, 0));
+		lblNewLabel = new JLabel("USUARIO");
+		panelCentral.add(lblNewLabel);
 		
-		textFieldusuario = new JTextField();
-		paneltextfields.add(textFieldusuario, BorderLayout.SOUTH);
-		textFieldusuario.setColumns(10);
-		textFieldusuario.setSize(100, 200);
+		textuUsuario = new JTextField();
+		panelCentral.add(textuUsuario);
+		textuUsuario.setColumns(10);
 		
-		textFieldcontraseña = new JTextField();
-		paneltextfields.add(textFieldcontraseña, BorderLayout.NORTH);
-		textFieldcontraseña.setColumns(10);
+		lblNewLabel_1 = new JLabel("CONTRSE\u00D1A");
+		panelCentral.add(lblNewLabel_1);
 		
-		btniniciosesion = new JButton("Inicio sesion");
-		paneltextfields.add(btniniciosesion, BorderLayout.WEST);
+		textContraseña = new JTextField();
+		panelCentral.add(textContraseña);
+		textContraseña.setColumns(10);
 		
-		btnregistro = new JButton("Registro");
+		panelSur = new JPanel();
+		contentPane.add(panelSur, BorderLayout.SOUTH);
 		
-		paneltextfields.add(btnregistro, BorderLayout.EAST);
+		btnIniciosesion = new JButton("INICIAR SESION");
+		panelSur.add(btnIniciosesion);
 		
-		btnregistro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new VentanaRegistro(ventanaActual);
-				ventanaActual.setVisible(false);
-			}
-		});
+		btnRegistro = new JButton("REGISTRO");
+		panelSur.add(btnRegistro);
 		btnvolverinicio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventanaActual.dispose();
 				ventanaAnterior.setVisible(true);
 			}
 		});
+		btnRegistro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				new VentanaRegistro(ventanaActual);
+				ventanaActual.setVisible(false);
+				
+				
+			}
+			});
 		setVisible(true);
 		
 	}

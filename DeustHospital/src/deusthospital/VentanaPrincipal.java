@@ -7,12 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.TreeMap;
 import java.awt.event.ActionEvent;
 
 public class VentanaPrincipal extends JFrame {
+	private ImageIcon imagenVitales;
 
 	private JPanel contentPane;
 	private JButton btninformacion;
@@ -42,6 +44,7 @@ public class VentanaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaPrincipal() {
+		imagenVitales = new ImageIcon(VentanaRegistro.class.getResource(""));
 		ventanaActual = this;
 		setTitle ("Ventana Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +74,10 @@ public class VentanaPrincipal extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		
-		labelimagen = new JLabel("imagen");
+		labelimagen = new JLabel("");
+		labelimagen.setMaximumSize(panel.getMaximumSize());
+		
+		labelimagen.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/deusthospital/vitales.jpg")));
 		panel.add(labelimagen);
 	
 		btninformacion.addActionListener(new ActionListener() {
