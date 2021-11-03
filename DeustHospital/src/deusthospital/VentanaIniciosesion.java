@@ -1,13 +1,19 @@
 package deusthospital;
 
 import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -25,7 +31,7 @@ public class VentanaIniciosesion extends JFrame {
 	private JLabel lblNewLabel;
 	private JTextField textuUsuario;
 	private JLabel lblNewLabel_1;
-	private JTextField textContraseña;
+	private JPasswordField textContraseña;
 	private JPanel panelSur;
 	private JButton btnIniciosesion,btnRegistro;
 	
@@ -83,7 +89,7 @@ public class VentanaIniciosesion extends JFrame {
 		lblNewLabel_1 = new JLabel("CONTRSE\u00D1A");
 		panelCentral.add(lblNewLabel_1);
 		
-		textContraseña = new JTextField();
+		textContraseña = new JPasswordField();
 		panelCentral.add(textContraseña);
 		textContraseña.setColumns(10);
 		
@@ -91,6 +97,7 @@ public class VentanaIniciosesion extends JFrame {
 		contentPane.add(panelSur, BorderLayout.SOUTH);
 		
 		btnIniciosesion = new JButton("INICIAR SESION");
+		
 		panelSur.add(btnIniciosesion);
 		
 		btnRegistro = new JButton("REGISTRO");
@@ -108,10 +115,42 @@ public class VentanaIniciosesion extends JFrame {
 				new VentanaRegistro(ventanaActual);
 				ventanaActual.setVisible(false);
 				
+		btnIniciosesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					String usuario = textuUsuario.getText();
+					@SuppressWarnings("deprecation")
+					String con = new String( textContraseña.getPassword());
+					System.out.println(VentanaPrincipal.tmpacientes);
+					if(VentanaPrincipal.tmpacientes.containsKey(con)){
+						Paciente p = VentanaPrincipal.tmpacientes.get(con);
+						if(p.getDni().equals(usuario)) {
+							JOptionPane.showMessageDialog( null, "inicio sesion correcto");
+							new ventanaCitas(ventanaActual);
+							ventanaActual.setVisible(false);
+							
+							
+					}else {
+						JOptionPane.showMessageDialog( null, "Usuario o contraseña incorrecto");
+						vaciarCampos();
+					}
+							
+					}
+						
+					}
+
+			
+				});		
 				
 			}
 			});
+		
 		setVisible(true);
+		
+	}
+	private void vaciarCampos() {
+		// TODO Auto-generated method stub
+		textContraseña.setText("");
+		textuUsuario.setText("");
 		
 	}
 		

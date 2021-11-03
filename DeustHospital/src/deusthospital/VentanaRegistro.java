@@ -96,15 +96,16 @@ public class VentanaRegistro extends JFrame {
 				String tlf = texttlf.getText();
 				boolean Correctodni = Pattern.matches(dniformato, d);
 				boolean Correctotlf = Pattern.matches(tlfformato, tlf);
-				if(Correctodni) {
+				if(Correctodni && Correctotlf) {
 					String c = textContraseña.getText();
 					String cc = textConfirmarcon.getText();
-					if(Correctotlf) {
+					
 						if(c.equals(cc) ) {
 							int t = Integer.parseInt(texttlf.getText());
 							Paciente p = new Paciente(d,t,c);
-							VentanaPrincipal.tmpacientes.put(p.getDni(),p);
+							VentanaPrincipal.tmpacientes.put(p.getContraseña(),p);
 							vaciarCampos();
+							JOptionPane.showMessageDialog( null, "Usuario registrado");
 							System.out.println("se ha metido bien");
 							ventanaActual.dispose();
 							ventanaAnterior.setVisible(true);
@@ -115,13 +116,22 @@ public class VentanaRegistro extends JFrame {
 						}
 					
 				}else {
-					JOptionPane.showMessageDialog( null, "Telefono incorrecto");
-					vaciarTlf();
+						JOptionPane.showMessageDialog( null, "Telefono o Dni incorrecto");
+						vaciarCampos();
 					
-				}
-				}
+			   }
+		
+
+
+				   
+			   }
+				   
+			   
+				   
+			   
+			    
 				
-				}
+				
 
 			
 				});
@@ -146,6 +156,12 @@ public class VentanaRegistro extends JFrame {
 	private void vaciarTlf() {
 		// TODO Auto-generated method stub
 		texttlf.setText("");
+		
+		
+	}
+	private void vaciarDni() {
+		// TODO Auto-generated method stub
+		textUsuario.setText("");
 		
 		
 	}
