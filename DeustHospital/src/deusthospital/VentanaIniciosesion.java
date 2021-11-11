@@ -17,6 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.TreeMap;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
@@ -29,12 +32,12 @@ public class VentanaIniciosesion extends JFrame {
 	private JPanel panelcentro,panelnorte,panelCentral;
 	private JButton btnvolverinicio;
 	private JLabel lblNewLabel;
-	private JTextField textuUsuario;
+	private JTextField textUsuario;
 	private JLabel lblNewLabel_1;
 	private JPasswordField textContraseña;
 	private JPanel panelSur;
 	private JButton btnIniciosesion,btnRegistro;
-	
+	private static Connection con; 
 
 	/**
 	 * Launch the application.
@@ -45,6 +48,17 @@ public class VentanaIniciosesion extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaIniciosesion(JFrame va) {
+		
+		try {
+			Class.forName("org.sqlite.JDBC");
+			con  =  DriverManager.getConnection("jdbc:sqlite:deusthospital.db");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		setTitle("Ventana incio sesion");
 		ventanaActual = this;
@@ -79,12 +93,12 @@ public class VentanaIniciosesion extends JFrame {
 		contentPane.add(panelCentral, BorderLayout.CENTER);
 		panelCentral.setLayout(new GridLayout(2, 2, 0, 0));
 		
-		lblNewLabel = new JLabel("USUARIO");
+		lblNewLabel = new JLabel("DNI");
 		panelCentral.add(lblNewLabel);
 		
-		textuUsuario = new JTextField();
-		panelCentral.add(textuUsuario);
-		textuUsuario.setColumns(10);
+		textUsuario = new JTextField();
+		panelCentral.add(textUsuario);
+		textUsuario.setColumns(10);
 		
 		lblNewLabel_1 = new JLabel("CONTRSE\u00D1A");
 		panelCentral.add(lblNewLabel_1);
@@ -116,33 +130,28 @@ public class VentanaIniciosesion extends JFrame {
 				ventanaActual.setVisible(false);
 				
 		btnIniciosesion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					String usuario = textuUsuario.getText();
-					@SuppressWarnings("deprecation")
-					String con = new String( textContraseña.getPassword());
-					System.out.println(VentanaPrincipal.tmpacientes);
-					if(VentanaPrincipal.tmpacientes.containsKey(con)){
-						Paciente p = VentanaPrincipal.tmpacientes.get(con);
-						if(p.getDni().equals(usuario)) {
-							JOptionPane.showMessageDialog( null, "inicio sesion correcto");
-							new ventanaCitas(ventanaActual);
-							ventanaActual.setVisible(false);
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						String dni = textUsuario.getText();
+						String c = new String(textContraseña.getPassword());
+						if(!dni.equals("") && !c.equals("")) {
 							
-							
-					}else {
-						JOptionPane.showMessageDialog( null, "Usuario o contraseña incorrecto");
-						vaciarCampos();
+							int resul = VentanaPrincipal.ObtenerPaciente(con, dni, c);
+							if(resul == 0) {
+								JOptionPane.showMessageDialog(null, "No estás registrado");
+							}else if(resul==1) {
+								JOptionPane.showMessageDialog(null, "La contraseña no es correcta");
+							}else {
+								JOptionPane.showMessageDialog(null, "Ongi etorri!");
+								
+							}
+						}
+						textUsuario.setText("");
+						textContraseña.setText("");
 					}
-							
-					}
-						
-					}
-
-			
-				});		
-				
-			}
-			});
+		});
 		
 		setVisible(true);
 		
@@ -150,8 +159,11 @@ public class VentanaIniciosesion extends JFrame {
 	private void vaciarCampos() {
 		// TODO Auto-generated method stub
 		textContraseña.setText("");
-		textuUsuario.setText("");
+		textUsuario.setText("");
 		
 	}
 		
+		});
+	}
 }
+

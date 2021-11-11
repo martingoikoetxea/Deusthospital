@@ -11,6 +11,9 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
@@ -31,6 +34,7 @@ public class VentanaRegistro extends JFrame {
 	private JTextField textConfirmarcon;
 	private JLabel lblNewLabel_3;
 	private JTextField texttlf;
+	private static Connection con; 
 
 	/**
 	 * Launch the application.
@@ -40,6 +44,17 @@ public class VentanaRegistro extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaRegistro(JFrame va) {
+		
+		try {
+			Class.forName("org.sqlite.JDBC");
+			con  =  DriverManager.getConnection("jdbc:sqlite:deusthospital.db");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		ventanaActual = this;
 		ventanaAnterior = va;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,53 +104,50 @@ public class VentanaRegistro extends JFrame {
 		texttlf.setColumns(10);
 		
 		btnregistro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String dniformato = "[0-9]{8}[A-Z]";
-				String d = textUsuario.getText();
-				String tlfformato="[0-9]{9}";
-				String tlf = texttlf.getText();
-				boolean Correctodni = Pattern.matches(dniformato, d);
-				boolean Correctotlf = Pattern.matches(tlfformato, tlf);
-				if(Correctodni && Correctotlf) {
-					String c = textContraseña.getText();
-					String cc = textConfirmarcon.getText();
-					
-						if(c.equals(cc) ) {
-							int t = Integer.parseInt(texttlf.getText());
-							Paciente p = new Paciente(d,t,c);
-							VentanaPrincipal.tmpacientes.put(p.getContraseña(),p);
-							vaciarCampos();
-							JOptionPane.showMessageDialog( null, "Usuario registrado");
-							System.out.println("se ha metido bien");
-							ventanaActual.dispose();
-							ventanaAnterior.setVisible(true);
-							System.out.println(VentanaPrincipal.tmpacientes);
-						}else {
-							JOptionPane.showMessageDialog( null, "La contraseña no coincide");
-							vaciarContraseña();
-						}
-					
-				}else {
-						JOptionPane.showMessageDialog( null, "Telefono o Dni incorrecto");
-						vaciarCampos();
-					
-			   }
-		
-
-
-				   
-			   }
-				   
-			   
-				   
-			   
-			    
-				
-				
-
 			
-				});
-				
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String dni = textUsuario.getText();
+				String c =textContraseña.getText();
+				String cc = textConfirmarcon.getText();
+				String tlf = texttlf.getText();
+				String tlfformato="[0-9]{9}";
+				String dniformato = "[0-9]{8}[A-Z]";
+				boolean Correctodni = Pattern.matches(dniformato, dni);
+				boolean Correctotlf = Pattern.matches(tlfformato, tlf);
+				if(!dni.equals("") && !c.equals("")&& !cc.equals("")) {
+					
+					int resul = VentanaPrincipal.ObtenerPaciente(con, dni,c);
+					if(resul == 0) {
+						if(Correctodni && Correctotlf) {
+								if(c.equals(cc) ) {
+									String t = texttlf.getText();
+									VentanaPrincipal.insertarPaciente(con, dni, tlf,c);
+									VentanaPrincipal.closeBD(con);
+									JOptionPane.showMessageDialog(null, "Te has registrado correctamente");
+									ventanaActual.dispose();
+									ventanaAnterior.setVisible(true);
+									System.out.println(VentanaPrincipal.tmpacientes);
+								}else {
+									JOptionPane.showMessageDialog( null, "La contraseña no coincide");
+									vaciarContraseña();
+								}
+						}
+						else {
+							JOptionPane.showMessageDialog( null, "Telefono o Dni incorrecto");
+							vaciarCampos();		
+						
+							
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "ERROR! Ese nombre de usuario ya existe");
+					}
+				}
+				textUsuario.setText("");
+				textContraseña.setText("");
+			}
+		});
 				setVisible(true);
 	}
 	private void vaciarCampos() {
